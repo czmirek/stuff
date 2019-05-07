@@ -29,34 +29,97 @@
 			<Code Language="CSharp">
 				<![CDATA[ 
     using System;
+	
+    /// <summary>
+    /// Strongly typed ID struct representing the identity of $classname$.
+    /// </summary>
     public readonly struct $classname$Id : IComparable<$classname$Id>, IEquatable<$classname$Id>
     {
+		/// <summary>
+        /// Identity value
+        /// </summary>
         public $idtype$ Value { get; }
 
+        /// <summary>
+        /// Creates a new instance of AnonymousOwnerId
+        /// </summary>
+        /// <param name="value">Identity value</param>
         public $classname$Id($idtype$ value)
         {
             Value = value;
         }
 
-        public static $classname$Id New($idtype$ $classname$Id) => new $classname$Id($classname$Id);
+        /// <summary>
+        /// Creates a new instance of AnonymousOwnerId
+        /// </summary>
+        /// <param name="local$classname$">Identity value</param>
+        /// <returns>Strongly typed identity</returns>
+        public static $classname$Id New($idtype$ local$classname$) => new $classname$Id(local$classname$);
 
+        /// <summary>
+        /// Checks whether two strongly typed identities are equal.
+        /// </summary>
+        /// <param name="other">Other identity struct.</param>
+        /// <returns>True if identities are equal. False otherwise.</returns>
         public bool Equals($classname$Id other) => this.Value.Equals(other.Value);
+		
+		/// <summary>
+        /// Compares values of two strongly typed identities.
+        /// </summary>
+        /// <param name="other">Other identity struct.</param>
+        /// <returns>1, 0 or -1</returns>
         public int CompareTo($classname$Id other) => Value.CompareTo(other.Value);
 
+        /// <summary>
+        /// Checks whether two strongly typed identities are equal.
+        /// </summary>
+        /// <param name="other">Other identity struct.</param>
+        /// <returns>True if identities are equal. False otherwise.</returns>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is $classname$Id other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns the hashcode of the identity value
+        /// </summary>
+        /// <returns>Hash code of identity value</returns>
         public override int GetHashCode() => Value.GetHashCode();
+		
+		/// <summary>
+        /// Returns the string representation of the identity value
+        /// </summary>
+        /// <returns>String representation of the identity value</returns>
         public override string ToString() => Value.ToString();
 
+        /// <summary>
+        /// Overloads the equality operator for comparing the values of the strongly typed identities.
+        /// </summary>
+        /// <param name="a">First strongly typed identity</param>
+        /// <param name="b">Second strongly typed identity</param>
+        /// <returns>True if two strongly typed identities are equal. False otherwise.</returns>
         public static bool operator ==($classname$Id a, $classname$Id b) => a.CompareTo(b) == 0;
+		
+		/// <summary>
+        /// Overloads the non-equality operator for comparing the values of the strongly typed identities.
+        /// </summary>
+        /// <param name="a">First strongly typed identity</param>
+        /// <param name="b">Second strongly typed identity</param>
+        /// <returns>True if two strongly typed identities are equal. False otherwise.</returns>
         public static bool operator !=($classname$Id a, $classname$Id b) => !(a == b);
 
+        /// <summary>
+        /// Method for allowing explicit conversion from the identity primitive type to the strongly typed identity struct.
+        /// </summary>
+        /// <param name="value">Value of the identity</param>
         public static explicit operator $classname$Id($idtype$ value) => new $classname$Id(value);
-        public static explicit operator $idtype$($classname$Id local_$classname$) => local_$classname$.ToString();
+	        
+		/// <summary>
+        /// Method for allowing explicit conversion from the strongly typed identity struct to the identity primitive type.
+        /// </summary>
+        /// <param name="localAnonymousOwner">Strongly typed identity struct</param>
+        public static explicit operator $idtype$($classname$Id local$classname$) => local$classname$.Value;
     }
 ]]>
 			</Code>
