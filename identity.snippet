@@ -35,13 +35,13 @@
     /// </summary>
     public readonly struct $classname$Id : IComparable<$classname$Id>, IEquatable<$classname$Id>
     {
-		/// <summary>
+	/// <summary>
         /// Identity value
         /// </summary>
         public $idtype$ Value { get; }
 
         /// <summary>
-        /// Creates a new instance of AnonymousOwnerId
+        /// Creates a new instance of $classname$Id
         /// </summary>
         /// <param name="value">Identity value</param>
         public $classname$Id($idtype$ value)
@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// Creates a new instance of AnonymousOwnerId
+        /// Creates a new instance of $classname$Id
         /// </summary>
         /// <param name="local$classname$">Identity value</param>
         /// <returns>Strongly typed identity</returns>
@@ -63,7 +63,7 @@
         /// <returns>True if identities are equal. False otherwise.</returns>
         public bool Equals($classname$Id other) => this.Value.Equals(other.Value);
 		
-		/// <summary>
+	/// <summary>
         /// Compares values of two strongly typed identities.
         /// </summary>
         /// <param name="other">Other identity struct.</param>
@@ -87,7 +87,7 @@
         /// <returns>Hash code of identity value</returns>
         public override int GetHashCode() => Value.GetHashCode();
 		
-		/// <summary>
+	/// <summary>
         /// Returns the string representation of the identity value
         /// </summary>
         /// <returns>String representation of the identity value</returns>
@@ -101,7 +101,7 @@
         /// <returns>True if two strongly typed identities are equal. False otherwise.</returns>
         public static bool operator ==($classname$Id a, $classname$Id b) => a.CompareTo(b) == 0;
 		
-		/// <summary>
+	/// <summary>
         /// Overloads the non-equality operator for comparing the values of the strongly typed identities.
         /// </summary>
         /// <param name="a">First strongly typed identity</param>
@@ -115,10 +115,10 @@
         /// <param name="value">Value of the identity</param>
         public static explicit operator $classname$Id($idtype$ value) => new $classname$Id(value);
 	        
-		/// <summary>
+	/// <summary>
         /// Method for allowing explicit conversion from the strongly typed identity struct to the identity primitive type.
         /// </summary>
-        /// <param name="localAnonymousOwner">Strongly typed identity struct</param>
+        /// <param name="local$classname$">Strongly typed identity struct</param>
         public static explicit operator $idtype$($classname$Id local$classname$) => local$classname$.Value;
     }
 ]]>
@@ -126,4 +126,3 @@
 		</Snippet>
 	</CodeSnippet>
 </CodeSnippets>
-
