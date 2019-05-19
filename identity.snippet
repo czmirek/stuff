@@ -35,13 +35,30 @@
     /// </summary>
     public readonly struct $classname$Id : IComparable<$classname$Id>, IEquatable<$classname$Id>
     {
-	/// <summary>
-        /// Identity value
+	
+	    /// <summary>
+        /// Determines whether the type of the Value property is nullable or not.
+        /// This information is required in operator overloading methods where 
+        /// values of nullable and/or non-nullable structs are compared.
+        /// </summary>
+        private static readonly bool ValueIsNullable = false;
+		
+		/// <summary>
+        /// Initializes the <see cref="ValueIsNullable"/> static field.
+        /// </summary>
+        static $classname$Id()
+        {
+            Type type = typeof($classname$Id).GetProperty("Value").PropertyType;
+            ValueIsNullable = !type.IsValueType || (Nullable.GetUnderlyingType(type) != null);
+        }
+		
+		/// <summary>
+        /// Identity value of the $classname$.
         /// </summary>
         public $idtype$ Value { get; }
 
         /// <summary>
-        /// Creates a new instance of $classname$Id
+        /// Creates a new value of $classname$Id
         /// </summary>
         /// <param name="value">Identity value</param>
         public $classname$Id($idtype$ value)
@@ -50,7 +67,7 @@
         }
 
         /// <summary>
-        /// Creates a new instance of $classname$Id
+        /// Creates a new value of $classname$Id
         /// </summary>
         /// <param name="local$classname$">Identity value</param>
         /// <returns>Strongly typed identity</returns>
@@ -63,15 +80,38 @@
         /// <returns>True if identities are equal. False otherwise.</returns>
         public bool Equals($classname$Id other) => this.Value.Equals(other.Value);
 		
-	/// <summary>
-        /// Compares values of two strongly typed identities.
+		/// <summary>
+        /// Compares values of two $classname$Id identities. If the value is nullable then
+		/// null values precede non-null values. Non-null values are compared using
+		/// CompareTo method of the value type.
         /// </summary>
         /// <param name="other">Other identity struct.</param>
-        /// <returns>1, 0 or -1</returns>
-        public int CompareTo($classname$Id other) => Value.CompareTo(other.Value);
+        /// <returns>0 if two $classname$Id are equal, 1 if this $classname$Id comes after the other $classname$Id and -1 if this $classname$Id comes before the other $classname$Id.</returns>
+        public int CompareTo($classname$Id other)        
+		{
+            if(ValueIsNullable)
+            {
+				// this code was generated from snippet
+				// the snippet does not know whether the Value type chosen
+				// is nullable or not. Therefore we disable the null comparison
+				// warning just for convenience.
+#pragma warning disable CS0472
+                if (Value == null && other.Value == null)
+                    return 0;
+
+                if (Value == null && other.Value != null)
+                    return -1;
+
+                if (Value != null && other.Value == null)
+                    return 1;                
+#pragma warning restore CS0472
+                
+            }
+            return Value.CompareTo(other.Value);
+        }
 
         /// <summary>
-        /// Checks whether two strongly typed identities are equal.
+        /// Checks whether two values of $classname$Id are equal.
         /// </summary>
         /// <param name="other">Other identity struct.</param>
         /// <returns>True if identities are equal. False otherwise.</returns>
@@ -82,44 +122,162 @@
         }
 
         /// <summary>
-        /// Returns the hashcode of the identity value
+        /// Returns the hashcode of the $classname$Id.
         /// </summary>
-        /// <returns>Hash code of identity value</returns>
+        /// <returns>Hash code of  $classname$Id</returns>
         public override int GetHashCode() => Value.GetHashCode();
 		
-	/// <summary>
-        /// Returns the string representation of the identity value
+		/// <summary>
+        /// Returns the string representation of $classname$Id
         /// </summary>
-        /// <returns>String representation of the identity value</returns>
-        public override string ToString() => Value.ToString();
+        /// <returns>String representation of $classname$Id</returns>
+        public override string ToString()
+        {
+            if(ValueIsNullable)
+            {
+				// this code was generated from snippet
+				// the snippet does not know whether the Value type chosen
+				// is nullable or not. Therefore we disable the null comparison
+				// warning just for convenience.
+#pragma warning disable CS0472
+                if (Value == null)
+                    return "";
+#pragma warning restore CS0472
+            }
 
-        /// <summary>
-        /// Overloads the equality operator for comparing the values of the strongly typed identities.
-        /// </summary>
-        /// <param name="a">First strongly typed identity</param>
-        /// <param name="b">Second strongly typed identity</param>
-        /// <returns>True if two strongly typed identities are equal. False otherwise.</returns>
-        public static bool operator ==($classname$Id a, $classname$Id b) => a.CompareTo(b) == 0;
+            return Value.ToString();
+        }
 		
-	/// <summary>
-        /// Overloads the non-equality operator for comparing the values of the strongly typed identities.
-        /// </summary>
-        /// <param name="a">First strongly typed identity</param>
-        /// <param name="b">Second strongly typed identity</param>
-        /// <returns>True if two strongly typed identities are equal. False otherwise.</returns>
-        public static bool operator !=($classname$Id a, $classname$Id b) => !(a == b);
-
         /// <summary>
-        /// Method for allowing explicit conversion from the identity primitive type to the strongly typed identity struct.
+        /// Method for allowing explicit conversion from the primitive type to the $classname$Id.
         /// </summary>
         /// <param name="value">Value of the identity</param>
         public static explicit operator $classname$Id($idtype$ value) => new $classname$Id(value);
 	        
-	/// <summary>
-        /// Method for allowing explicit conversion from the strongly typed identity struct to the identity primitive type.
+		/// <summary>
+        /// Method for allowing explicit conversion from $classname$Id to the identity primitive type.
         /// </summary>
         /// <param name="local$classname$">Strongly typed identity struct</param>
         public static explicit operator $idtype$($classname$Id local$classname$) => local$classname$.Value;
+		
+		/// <summary>
+        /// Overloads the equality operator for comparing the values of two $classname$Id.
+        /// </summary>
+        /// <param name="a">First $classname$Id</param>
+        /// <param name="b">Second $classname$Id</param>
+        /// <returns>True if two $classname$Id values are equal. False otherwise.</returns>
+        public static bool operator ==($classname$Id a, $classname$Id b) => a.CompareTo(b) == 0;
+		
+		/// <summary>
+        /// Overloads the non-equality operator for comparing the values of two $classname$Id.
+        /// </summary>
+        /// <param name="a">First $classname$Id</param>
+        /// <param name="b">Second $classname$Id</param>
+        /// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+        public static bool operator !=($classname$Id a, $classname$Id b) => !(a == b);
+		
+		/// <summary>
+        /// Overloads the equality operator for comparing the values of two $classname$Id with one
+		/// $classname$ being nullable. $classname$Id? null value is considered equal 
+		/// with $classname$Id.Value == null. Therefore if the underlying type is nullable and the
+		/// value contains null, that is considered the same thing as if the struct itself was null.
+        /// </summary>
+        /// <param name="a">First $classname$Id</param>
+        /// <param name="b">Second $classname$Id</param>
+        /// <returns>True if two $classname$Id values are equal. False otherwise.</returns>
+		public static bool operator ==($classname$Id? a, $classname$Id b) => CompareNonNullableWithNullable(b, a);
+		
+		/// <summary>
+        /// Overloads the non-equality operator for comparing the values of two $classname$Id with one
+		/// $classname$ being nullable.
+        /// </summary>
+        /// <param name="a">First $classname$Id</param>
+        /// <param name="b">Second $classname$Id</param>
+        /// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+        public static bool operator !=($classname$Id? a, $classname$Id b) => !CompareNonNullableWithNullable(b, a);
+		
+		/// <summary>
+        /// Overloads the equality operator for comparing the values of two $classname$Id with one
+		/// $classname$ being nullable.
+        /// </summary>
+        /// <param name="a">First $classname$Id</param>
+        /// <param name="b">Second $classname$Id</param>
+        /// <returns>True if two $classname$Id values are equal. False otherwise.</returns>
+        public static bool operator ==($classname$Id a, $classname$Id? b) => CompareNonNullableWithNullable(a, b);
+		
+		/// <summary>
+        /// Overloads the non-equality operator for comparing the values of two $classname$Id with one
+		/// $classname$ being nullable.
+        /// </summary>
+        /// <param name="a">First $classname$Id</param>
+        /// <param name="b">Second $classname$Id</param>
+        /// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+        public static bool operator !=($classname$Id a, $classname$Id? b) => !CompareNonNullableWithNullable(a, b);
+		
+		/// <summary>
+        /// Overloads the equality operator for comparing the values of two $classname$Id with one
+		/// $classname$ being nullable.
+        /// </summary>
+        /// <param name="a">First $classname$Id</param>
+        /// <param name="b">Second $classname$Id</param>
+        /// <returns>True if two $classname$Id values are equal. False otherwise.</returns>
+        public static bool operator ==($classname$Id? a, $classname$Id? b) => CompareNullableWithNullable(a, b);
+		
+		/// <summary>
+        /// Overloads the non-equality operator for comparing the values of two $classname$Id with one
+		/// $classname$ being nullable.
+        /// </summary>
+        /// <param name="a">First $classname$Id</param>
+        /// <param name="b">Second $classname$Id</param>
+        /// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+        public static bool operator !=($classname$Id? a, $classname$Id? b) => !CompareNullableWithNullable(a, b);
+		
+		/// <summary>
+		/// Private helper method for comparing a non-nullable $classname$Id 
+		/// with nullable $classname$Id. $classname$Id? null value is considered equal 
+		/// with $classname$Id.Value == null. Therefore if the underlying type is nullable and the
+		/// value of the other struct is null, that is considered the same thing as if the 
+		/// struct itself was null.
+		/// </summary>
+		/// <param name="nonNullable">Non-nullable value of $classname$Id</param>
+        /// <param name="nullable">Nullable value of $classname$Id</param>
+        /// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+        private static bool CompareNonNullableWithNullable($classname$Id nonNullable, $classname$Id? nullable)
+        {
+			// if nullable has value, compare the struct like a non-nullable
+            if (nullable.HasValue)
+                return nullable.Value == nonNullable;
+						
+			// otherwise if the non-nullable value is null, the two are considered equal
+			
+			#pragma warning disable CS0472
+            if (ValueIsNullable && nonNullable.Value == null)
+                return true;
+			#pragma warning restore CS0472
+			
+            return false;
+        }
+		
+		/// <summary>
+		/// Private helper method for comparing two nullable $classname$Id values.
+		/// </summary>
+		/// <param name="a">First nullable value of $classname$Id</param>
+        /// <param name="b">Second nullable value of $classname$Id</param>
+        /// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+        private static bool CompareNullableWithNullable($classname$Id? a, $classname$Id? b)
+        {
+			// if neither has value, they are both null and therefore are equal.
+            if (!a.HasValue && !b.HasValue)
+                return true;
+			
+			// if first or second has value, compare it 
+			// with the <see cref="CompareNonNullableWithNullable" />
+            
+			if (a.HasValue)
+                return CompareNonNullableWithNullable(a.Value, b);
+
+            return CompareNonNullableWithNullable(b.Value, a);
+        }
     }
 ]]>
 			</Code>
