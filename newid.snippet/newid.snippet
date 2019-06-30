@@ -30,12 +30,12 @@
 				<![CDATA[ 
 using System;
 
+	[Serializable]
 	/// <summary>
 	/// Value representing the identity of $classname$.
 	/// </summary>
 	public readonly struct $classname$Id : IComparable<$classname$Id>, IComparable<$classname$Id?>, IEquatable<$classname$Id>, IEquatable<$classname$Id?>
 	{
-
 		/// <summary>
 		/// Determines whether the type of the Value property is nullable or not.
 		/// This information is required in operator overloading methods where 
@@ -63,15 +63,24 @@ using System;
 		/// <param name="value">Identity value</param>
 		public $classname$Id(string value)
 		{
+		     if(ValueIsNullable)
+            {
+#pragma warning disable CS0472
+                if(value == null)
+                {
+                    throw new InvalidOperationException("The identity " + nameof($classname$Id) + " cannot have a null value. To use null, set the identity property as nullable (\"{nameof($classname$Id)}?\").");
+                }
+#pragma warning restore CS0472
+            }
 			Value = value;
 		}
 
 		/// <summary>
-		/// Creates a new value of $classname$Id
+		/// Creates a new value of <see cref="$classname$Id"/>.
 		/// </summary>
-		/// <param name="local$classname$">Identity value</param>
+		/// <param name="local$classname$Id">Identity value</param>
 		/// <returns>Identity struct</returns>
-		public static $classname$Id New(string local$classname$) => new $classname$Id(local$classname$);
+		public static $classname$Id New(string local$classname$Id) => new $classname$Id(local$classname$Id);
 
 		/// <summary>
 		/// Checks whether two identity values are equal.
@@ -89,7 +98,7 @@ using System;
 		public bool Equals($classname$Id? other) => CompareTo(other) == 0;
 
 		/// <summary>
-		/// Checks whether two values of $classname$Id are equal.
+		/// Checks whether two values of <see cref="$classname$Id"/> are equal.
 		/// </summary>
 		/// <param name="other">Other identity struct.</param>
 		/// <returns>True if identities are equal. False otherwise.</returns>
@@ -102,157 +111,108 @@ using System;
 		}
 
 		/// <summary>
-		/// Compares values of two $classname$Id identities. If the value is nullable then
-		/// null values precede non-null values. Non-null values are compared using
-		/// CompareTo method of the value type.
+		/// Compares values of two <see cref="$classname$Id"/> identities.
 		/// </summary>
 		/// <param name="other">Other identity struct.</param>
-		/// <returns>0 if two $classname$Id are equal, 1 if this $classname$Id comes after the other $classname$Id and -1 if this $classname$Id comes before the other $classname$Id.</returns>
-		public int CompareTo($classname$Id other)
-		{
-			if (ValueIsNullable)
-			{
-				// this code was generated from snippet
-				// the snippet does not know whether the Value type chosen
-				// is nullable or not. Therefore we disable the null comparison
-				// warning just for convenience.
-#pragma warning disable CS0472
-				if (Value == null && other.Value == null)
-					return 0;
-
-				if (Value == null && other.Value != null)
-					return -1;
-
-				if (Value != null && other.Value == null)
-					return 1;
-#pragma warning restore CS0472
-
-			}
-			return Value.CompareTo(other.Value);
-		}
+		/// <returns>0 if two <see cref="$classname$Id"/> are equal, 1 if this <see cref="$classname$Id"/> comes after the other <see cref="$classname$Id"/> and -1 if this <see cref="$classname$Id"/> comes before the other <see cref="$classname$Id"/>.</returns>
+		public int CompareTo($classname$Id other) => Value.CompareTo(other.Value);
 
 		/// <summary>
 		/// Compares the struct with the other nullable struct value.
 		/// </summary>
 		/// <param name="other">Other nullable struct value</param>
-		/// <returns>0 if two $classname$Id are equal, 1 if this $classname$Id comes after the other $classname$Id and -1 if this $classname$Id comes before the other $classname$Id.</returns>
+		/// <returns>0 if two <see cref="$classname$Id"/> are equal, 1 if this <see cref="$classname$Id"/> comes after the other <see cref="$classname$Id"/> and -1 if this <see cref="$classname$Id"/> comes before the other <see cref="$classname$Id"/>.</returns>
 		public int CompareTo($classname$Id? other)
 		{
 			// if nullable has value, compare the struct like a non-nullable
 			if (other.HasValue)
 				return other.Value.CompareTo(this);
 
-			// otherwise if the non-nullable value is null, the two are considered equal
-#pragma warning disable CS0472
-			if (ValueIsNullable && Value == null)
-				return 0;
-#pragma warning restore CS0472
-
-			return 1;
+			//otherwise the non-null value is considered greater
+            return 1;
 		}
 
 		/// <summary>
-		/// Returns the hashcode of the $classname$Id.
+		/// Returns the hashcode of the <see cref="$classname$Id"/>.
 		/// </summary>
-		/// <returns>Hash code of $classname$Id</returns>
-		public override int GetHashCode()
-		{
-			if (ValueIsNullable)
-				return 0;
-
-			return Value.GetHashCode();
-		}
+		/// <returns>Hash code of <see cref="$classname$Id"/></returns>
+		public override int GetHashCode() => Value.GetHashCode();
 
 		/// <summary>
-		/// Returns the string representation of $classname$Id
+		/// Returns the string representation of <see cref="$classname$Id"/>.
 		/// </summary>
-		/// <returns>String representation of $classname$Id</returns>
-		public override string ToString()
-		{
-			if (ValueIsNullable)
-			{
-				// this code was generated from snippet
-				// the snippet does not know whether the Value type chosen
-				// is nullable or not. Therefore we disable the null comparison
-				// warning just for convenience.
-#pragma warning disable CS0472
-				if (Value == null)
-					return "";
-#pragma warning restore CS0472
-			}
-
-			return Value.ToString();
-		}
+		/// <returns>String representation of <see cref="$classname$Id"/></returns>
+		public override string ToString() => Value.ToString();
 
 		/// <summary>
-		/// Method for allowing explicit conversion from the primitive type to the $classname$Id.
+		/// Method for allowing explicit conversion from the primitive type to the <see cref="$classname$Id"/>.
 		/// </summary>
 		/// <param name="value">Value of the identity</param>
 		public static explicit operator $classname$Id(string value) => new $classname$Id(value);
 
 		/// <summary>
-		/// Method for allowing explicit conversion from $classname$Id to the identity primitive type.
+		/// Method for allowing explicit conversion from <see cref="$classname$Id"/> to the identity primitive type.
 		/// </summary>
-		/// <param name="local$classname$">Identity struct</param>
-		public static explicit operator string($classname$Id local$classname$) => local$classname$.Value;
+		/// <param name="local$classname$Id">Identity struct</param>
+		public static explicit operator string($classname$Id local$classname$Id) => local$classname$Id.Value;
 
 		/// <summary>
-		/// Overloads the equality operator for comparing the values of two $classname$Id.
+		/// Overloads the equality operator for comparing the values of two <see cref="$classname$Id"/>.
 		/// </summary>
-		/// <param name="a">First $classname$Id</param>
-		/// <param name="b">Second $classname$Id</param>
-		/// <returns>True if two $classname$Id values are equal. False otherwise.</returns>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are equal. False otherwise.</returns>
 		public static bool operator ==($classname$Id a, $classname$Id b) => a.CompareTo(b) == 0;
 
 		/// <summary>
-		/// Overloads the non-equality operator for comparing the values of two $classname$Id.
+		/// Overloads the non-equality operator for comparing the values of two <see cref="$classname$Id"/>.
 		/// </summary>
-		/// <param name="a">First $classname$Id</param>
-		/// <param name="b">Second $classname$Id</param>
-		/// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are not equal. False otherwise.</returns>
 		public static bool operator !=($classname$Id a, $classname$Id b) => !(a == b);
 
 		/// <summary>
-		/// Overloads the equality operator for comparing the values of two $classname$Id with one
-		/// $classname$ being nullable. $classname$Id? null value is considered equal 
-		/// with $classname$Id.Value == null. Therefore if the underlying type is nullable and the
+		/// Overloads the equality operator for comparing the values of two <see cref="$classname$Id"/> with one
+		/// $classname$ being nullable. <see cref="$classname$Id"/>? null value is considered equal 
+		/// with <see cref="$classname$Id"/>.Value == null. Therefore if the underlying type is nullable and the
 		/// value contains null, that is considered the same thing as if the struct itself was null.
 		/// </summary>
-		/// <param name="a">First $classname$Id</param>
-		/// <param name="b">Second $classname$Id</param>
-		/// <returns>True if two $classname$Id values are equal. False otherwise.</returns>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are equal. False otherwise.</returns>
 		public static bool operator ==($classname$Id? a, $classname$Id b) => b.CompareTo(a) == 0;
 
 		/// <summary>
-		/// Overloads the non-equality operator for comparing the values of two $classname$Id with one
-		/// $classname$ being nullable.
+		/// Overloads the non-equality operator for comparing the values of two <see cref="$classname$Id"/> with one
+		/// <see cref="$classname$Id"/> being nullable.
 		/// </summary>
-		/// <param name="a">First $classname$Id</param>
-		/// <param name="b">Second $classname$Id</param>
-		/// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are not equal. False otherwise.</returns>
 		public static bool operator !=($classname$Id? a, $classname$Id b) => !(a == b);
 
 		/// <summary>
-		/// Overloads the equality operator for comparing the values of two $classname$Id with one
-		/// $classname$ being nullable.
+		/// Overloads the equality operator for comparing the values of two <see cref="$classname$Id"/> with one
+		/// <see cref="$classname$Id"/> being nullable.
 		/// </summary>
-		/// <param name="a">First $classname$Id</param>
-		/// <param name="b">Second $classname$Id</param>
-		/// <returns>True if two $classname$Id values are equal. False otherwise.</returns>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are equal. False otherwise.</returns>
 		public static bool operator ==($classname$Id a, $classname$Id? b) => a.CompareTo(b) == 0;
 
 		/// <summary>
-		/// Overloads the non-equality operator for comparing the values of two $classname$Id with one
-		/// $classname$ being nullable.
+		/// Overloads the non-equality operator for comparing the values of two <see cref="$classname$Id"/> with one
+		/// <see cref="$classname$Id"/> being nullable.
 		/// </summary>
-		/// <param name="a">First $classname$Id</param>
-		/// <param name="b">Second $classname$Id</param>
-		/// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are not equal. False otherwise.</returns>
 		public static bool operator !=($classname$Id a, $classname$Id? b) => !(a == b);
 
 		/// <summary>
-		/// Overloads the equality operator for comparing the values of two $classname$Id with one
-		/// $classname$ being nullable.
+		/// Overloads the equality operator for comparing the values of two <see cref="$classname$Id"/> with one
+		/// <see cref="$classname$Id"/> being nullable.
 		/// </summary>
 		/// <param name="a">First $classname$Id</param>
 		/// <param name="b">Second $classname$Id</param>
@@ -260,20 +220,20 @@ using System;
 		public static bool operator ==($classname$Id? a, $classname$Id? b) => CompareNullableWithNullable(a, b);
 
 		/// <summary>
-		/// Overloads the non-equality operator for comparing the values of two $classname$Id with one
-		/// $classname$ being nullable.
+		/// Overloads the non-equality operator for comparing the values of two <see cref="$classname$Id"/> with one
+		/// <see cref="$classname$Id"/> being nullable.
 		/// </summary>
-		/// <param name="a">First $classname$Id</param>
-		/// <param name="b">Second $classname$Id</param>
-		/// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are not equal. False otherwise.</returns>
 		public static bool operator !=($classname$Id? a, $classname$Id? b) => !CompareNullableWithNullable(a, b);
 
 		/// <summary>
-		/// Private helper method for comparing two nullable $classname$Id values.
+		/// Private helper method for comparing two nullable <see cref="$classname$Id"/> values.
 		/// </summary>
-		/// <param name="a">First nullable value of $classname$Id</param>
-		/// <param name="b">Second nullable value of $classname$Id</param>
-		/// <returns>True if two $classname$Id values are not equal. False otherwise.</returns>
+		/// <param name="a">First nullable value of <see cref="$classname$Id"/></param>
+		/// <param name="b">Second nullable value of <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are not equal. False otherwise.</returns>
 		private static bool CompareNullableWithNullable($classname$Id? a, $classname$Id? b)
 		{
 			// if neither has value, they are both null and therefore are equal.
