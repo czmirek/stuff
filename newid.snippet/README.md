@@ -47,4 +47,4 @@ public class Product
 }
 ```
 
-In the example above, the ``Id`` property is nullable. I favor this approach more since it's clear that there are cases in the business layer where the model is valid with ``Id`` equal to null, e.g. during a repository insert.
+In the example above, the ``Id`` property is nullable. I don't recommend this approach more since it's not very clear what the entity being null represents. The property being null should really be used only for properties where you want to express its optionality.
