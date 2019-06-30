@@ -11,15 +11,13 @@ The snippet has two parameters:
 
 - **Immutable** - as structs should be.
 - **Operator overloading** - comparison operators ``==`` and ``!=`` are handled.
+- **Custom underlying type** - choose ``string``, ``int``, ``Guid``, whatever and it will work, even with a nullable types such as string.
 - **``IComparable``** - identities are compared using the underlying type.
 - **``IEquatable``** - identities are equal if their underlying types are equal.
-- **``null`` support**
-  - **Nullable underyling type**  
-  The generated struct handles cases where the underlying type is nullable.
-  - **Support for nullable identities**  
-  The generated struct of course can be nullable, this is handled by comparison operators (there's a catch though, see below).
-  - **Null equality**  
-  A nullable struct being ``null`` is considered equal to a struct with null
+- **Support for nullable identities**  
+  The generated struct can be compared with other nullable struct of same type.
+- **Forbidden null underlying value**  
+  If you choose a nullable underlying type such as string, the constructor then throws exception on ``null`` values.
 
 ## Note on using ``null`` identities
 
@@ -50,30 +48,3 @@ public class Product
 ```
 
 In the example above, the ``Id`` property is nullable. I favor this approach more since it's clear that there are cases in the business layer where the model is valid with ``Id`` equal to null, e.g. during a repository insert.
-
-## Handling of ``null`` struct and ``null`` underlying value
-
-If you want the underlying type to be something nullable e.g. ``string``, ``int?`` etc. then you need to know that the snippet will generate a code which makes a null struct equal with a struct with the null value.
-
-```csharp
-ProductId? a = null;
-ProductId b = new ProductId(null);
-
-Console.WriteLine(a == b); // outputs true
-```
-
-This is a design decision. When using a nullable underlying type, I don't want to care whether the struct is null or whether the value of the struct is null, I consider both equal.
-
-### There's a catch though
-
-Always use comparison operators, do not use "Equals" method of a nullable struct, since it's a method ``Nullable<T>.Equals`` which follows a different logic and cannot be unfortunatelly overriden in any other way.
-
-```csharp
-ProductId? a = null;
-ProductId b = new ProductId(null);
-
-Console.WriteLine(a == b);      // outputs true
-Console.WriteLine(a.Equals(b)); // outputs false !!!
-```
-
-Yes, this is not very nice but if you stick to using comparison operators or avoid using nullable underlying values, you should be fine.
