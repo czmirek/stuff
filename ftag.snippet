@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>Tag helper with a context boilerplate code</Title>
+			<Author>Miroslav Bartl</Author>
+			<Description>Tag helper with a context boilerplate code for component-like usage</Description>
+			<Shortcut>ftag</Shortcut>
+		</Header>
+		<Snippet>
+			<References>
+				<Reference>
+					<Assembly>System.dll</Assembly>
+				</Reference>
+			</References>
+			<Declarations>
+				<Literal>
+					<ID>target</ID>
+					<ToolTip>Html target element</ToolTip>
+					<Default>my</Default>
+				</Literal>
+				<Literal>
+					<ID>name</ID>
+					<ToolTip>Replace with specified name</ToolTip>
+					<Default>My</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="CSharp">
+				<![CDATA[ 
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using System;
+using System.IO;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+
+	[HtmlTargetElement("$target$", TagStructure = TagStructure.NormalOrSelfClosing)]
+	public class $name$TagHelper : TagHelper
+	{
+		private readonly IHtmlHelper htmlHelper;
+        private readonly HtmlEncoder htmlEncoder;
+
+        public $name$TagHelper(IHtmlHelper htmlHelper, HtmlEncoder htmlEncoder)
+        {
+            this.htmlHelper = htmlHelper ?? throw new ArgumentNullException(nameof(htmlHelper));
+            this.htmlEncoder = htmlEncoder ?? throw new ArgumentNullException(nameof(htmlEncoder));
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        {
+            (htmlHelper as IViewContextAware).Contextualize(ViewContext);
+            var partial = await htmlHelper.PartialAsync("Components/$name$/$name$", null);
+            var writer = new StringWriter();
+            partial.WriteTo(writer, htmlEncoder);
+            output.Content.SetHtmlContent(writer.ToString());
+        }
+	}
+]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>
