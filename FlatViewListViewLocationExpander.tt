@@ -1,0 +1,59 @@
+<#@ template hostspecific="true" debug="true" language="C#" compilerOptions="/langversion:7" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Collections.Generic" #>
+// <generated />
+namespace Intergraph.PVV.Web
+{
+	using Microsoft.AspNetCore.Mvc.Razor;
+	using System.Collections.Generic;
+	
+	/// <summary>
+	/// Allows loading of views by the filename only. This asssumes that all view names are unique.
+	/// </summary>
+	public class FlatViewListViewLocationExpander : IViewLocationExpander
+	{
+		public IEnumerable<string> ExpandViewLocations(ViewLocationExpanderContext context, IEnumerable<string> viewLocations)
+		{
+			switch (context.ViewName)
+			{
+<# 
+				string mainDir = this.Host.ResolvePath("..\\"); 
+				string[] files = Directory.GetFiles(mainDir, "*.cshtml", SearchOption.AllDirectories);
+				List<string> viewPaths = new List<string>();
+				foreach(string file in files) {
+					string[] fullViewPathArr = file.Split(new string[] {"..\\"}, StringSplitOptions.None);
+					string vp = fullViewPathArr[1];
+					
+
+					string fileName = Path.GetFileName(vp);
+
+					if(fileName == "_ViewImports.cshtml" || fileName == "_ViewStart.cshtml")
+							continue;
+
+					
+
+					
+					
+					if(!viewPaths.Contains(vp))
+						viewPaths.Add(vp);
+				}
+
+				foreach(string vp in viewPaths) {
+					string fileName = Path.GetFileNameWithoutExtension(vp);
+					string path = vp.Replace("\\", "/");
+#>
+				case "<#=fileName#>": 
+					return new string[] { "<#=path#>" };
+
+<#
+				}
+				
+			#>
+				default: return viewLocations;
+			}
+		}
+
+		public void PopulateValues(ViewLocationExpanderContext context) { }
+	}
+}
