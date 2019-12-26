@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>Strongly typed string ID</Title>
+			<Author>Miroslav Bartl</Author>
+			<Description>Adds boilerplate code for creating a strongly typed ID with a string value</Description>
+			<Shortcut>stringid</Shortcut>
+		</Header>
+		<Snippet>
+			<References>
+				<Reference>
+					<Assembly>System.dll</Assembly>
+				</Reference>
+			</References>
+			<Declarations>
+				<Literal>
+					<ID>classname</ID>
+					<ToolTip>Replace with specified name</ToolTip>
+					<Default>MyClass</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="CSharp">
+				<![CDATA[ 
+using System;
+using System.ComponentModel;
+
+	[TypeConverter(typeof($classname$IdTypeConverter))]
+	[Serializable]
+	/// <summary>
+	/// Value representing the identity of $classname$.
+	/// </summary>
+	public readonly struct $classname$Id : IComparable<$classname$Id>, IEquatable<$classname$Id>
+	{
+		/// <summary>
+		/// Identity value of the $classname$Id.
+		/// </summary>
+		public string Id { get; }
+
+		/// <summary>
+		/// Creates a new value of $classname$Id
+		/// </summary>
+		/// <param name="value">Identity value</param>
+		public $classname$Id(string id)
+		{
+				if (String.IsNullOrEmpty(id))
+						throw new InvalidOperationException("The identity " + nameof($classname$Id) + " cannot be empty or a null string.");
+				
+				Id = id;
+		}
+
+		/// <summary>
+		/// Checks whether two identity values are equal.
+		/// </summary>
+		/// <param name="other">Other identity struct.</param>
+		/// <returns>True if identities are equal. False otherwise.</returns>
+		public bool Equals($classname$Id other) => CompareTo(other) == 0;
+		
+		/// <summary>
+		/// Checks whether two values of <see cref="$classname$Id"/> are equal.
+		/// </summary>
+		/// <param name="other">Other identity struct.</param>
+		/// <returns>True if identities are equal. False otherwise.</returns>
+		public override bool Equals(object obj)
+		{
+			if (obj is $classname$Id)
+				return CompareTo(($classname$Id)obj) == 0;
+
+			return false;
+		}
+
+		/// <summary>
+		/// Compares values of two <see cref="$classname$Id"/> identities.
+		/// </summary>
+		/// <param name="other">Other identity struct.</param>
+		/// <returns>0 if two <see cref="$classname$Id"/> are equal, 1 if this <see cref="$classname$Id"/> comes after the other <see cref="$classname$Id"/> and -1 if this <see cref="$classname$Id"/> comes before the other <see cref="$classname$Id"/>.</returns>
+		public int CompareTo($classname$Id other) => Id.CompareTo(other.Id);
+
+		/// <summary>
+		/// Returns the hashcode of the <see cref="$classname$Id"/>.
+		/// </summary>
+		/// <returns>Hash code of <see cref="$classname$Id"/></returns>
+		public override int GetHashCode() => Id.GetHashCode();
+
+		/// <summary>
+		/// Returns the string representation of <see cref="$classname$Id"/>.
+		/// </summary>
+		/// <returns>String representation of <see cref="$classname$Id"/></returns>
+		public override string ToString() => Id.ToString();
+
+		/// <summary>
+		/// Method for allowing explicit conversion from the primitive type to the <see cref="$classname$Id"/>.
+		/// </summary>
+		/// <param name="value">Value of the identity</param>
+		public static explicit operator $classname$Id(string value) => new $classname$Id(value);
+
+		/// <summary>
+		/// Method for allowing explicit conversion from <see cref="$classname$Id"/> to the identity primitive type.
+		/// </summary>
+		/// <param name="local$classname$Id">Identity struct</param>
+		public static explicit operator string($classname$Id local$classname$Id) => local$classname$Id.Id;
+
+		/// <summary>
+		/// Overloads the equality operator for comparing the values of two <see cref="$classname$Id"/>.
+		/// </summary>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are equal. False otherwise.</returns>
+		public static bool operator ==($classname$Id a, $classname$Id b) => a.CompareTo(b) == 0;
+
+		/// <summary>
+		/// Overloads the non-equality operator for comparing the values of two <see cref="$classname$Id"/>.
+		/// </summary>
+		/// <param name="a">First <see cref="$classname$Id"/></param>
+		/// <param name="b">Second <see cref="$classname$Id"/></param>
+		/// <returns>True if two <see cref="$classname$Id"/> values are not equal. False otherwise.</returns>
+		public static bool operator !=($classname$Id a, $classname$Id b) => !(a == b);
+    
+    class $classname$IdTypeConverter : TypeConverter
+		{
+				public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+						=> sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+
+				public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+				{
+						var stringValue = value as string;
+						if (!String.IsNullOrEmpty(stringValue))
+						{
+								return new $classname$Id(stringValue);
+						}
+						return base.ConvertFrom(context, culture, value);
+				}
+		}
+	}
+]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

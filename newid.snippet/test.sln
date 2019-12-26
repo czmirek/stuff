@@ -7,8 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewidSnippetTest", "NewidSn
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snippet", "Snippet", "{C37E5BF9-695D-46F3-9782-181C15F76EA8}"
 	ProjectSection(SolutionItems) = preProject
-		newid.snippet = newid.snippet
 		README.md = README.md
+		stringid.snippet = stringid.snippet
 	EndProjectSection
 EndProject
 Global
