@@ -26,7 +26,7 @@ screen -S azexec -p 0 -X stuff "az login --service-principal --username ${servic
 tail -f screenlog.0 | sed '/^ENDAZLOGIN[[:cntrl:]]*$/ q'
 > screenlog.0
 
-screen -S azexec -p 0 -X stuff "az container exec -g mb-dev-rg -n nginxtest --exec-command /bin/bash^M" &
+screen -S azexec -p 0 -X stuff "az container exec -g myresourcegroup -n nginxtest --exec-command /bin/bash^M" &
 until grep "^root@SandboxHost-.*" screenlog.0 > /dev/null;
 do
     echo "Waiting for container terminal..."
